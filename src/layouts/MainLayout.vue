@@ -26,7 +26,7 @@
     </q-header>
 
     <q-page-container>
-      <router-view />
+      <router-view :key="route.params.id" />
     </q-page-container>
   </q-layout>
 </template>
