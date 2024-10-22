@@ -100,11 +100,11 @@ const closeForm = () => {
 
 const router = useRouter();
 
-async function getRequest(id) {
-  if (!reqStore.details[id]) {
-    await reqStore.getDetails(id);
+async function getRequest(row) {
+  if (!reqStore.details[row.id]) {
+    await reqStore.getDetails(row.id);
   }
-  router.push(`/request/${id}`);
+  router.push(`/request/${String(row.num)}`);
 }
 
 const deleteRequest = (id) => {

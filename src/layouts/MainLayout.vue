@@ -8,9 +8,8 @@
           <q-route-tab
             v-for="tab in reqStore.tabs"
             :key="tab.id"
-            :name="tab.name"
             :label="tab.label"
-            :to="`/request/${tab.id}`"
+            :to="`/request/${tab.num}`"
           >
             <q-btn
               flat
@@ -26,7 +25,7 @@
     </q-header>
 
     <q-page-container>
-      <router-view :key="route.params.id" />
+      <router-view :key="route.params.num" />
     </q-page-container>
   </q-layout>
 </template>
@@ -34,6 +33,7 @@
 <script setup>
 import { useRequestStore } from "src/stores/requests";
 import { useRouter, useRoute } from "vue-router";
+import { LocalStorage } from "quasar";
 import { watch } from "vue";
 
 const reqStore = useRequestStore();
@@ -51,16 +51,21 @@ watch(
   () => route.name,
   (newName) => {
     if (newName === "ReqDetails") {
-      const id = route.params.id;
-      const currentRow = reqStore.rows.find((row) => row.id === id);
+      const num = route.params.num; // Получаем num
+
+      let id =
+        reqStore.rows.find((row) => row.num == num)?.id ||
+        reqStore.getIdByNum(num);
 
       // Проверяем, если вкладка уже существует, не добавляем её
       if (!reqStore.tabIsOpen(id)) {
         reqStore.addTab({
           id: id,
-          label: `Заявка №${currentRow.num}`,
-          name: id,
+          label: `Заявка №${num}`,
+          num: num,
         });
+
+        LocalStorage.setItem("tabs", reqStore.tabs);
       }
     }
   },
@@ -76,5 +81,6 @@ const closeTab = (id) => {
       console.error("Ошибка навигации:", err);
     });
   }
+  LocalStorage.setItem("tabs", reqStore.tabs);
 };
 </script>

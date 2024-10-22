@@ -1,16 +1,19 @@
 import { defineStore } from "pinia";
 import { Loading } from "quasar";
 import { ref } from "vue";
+import { LocalStorage } from "quasar";
 import { showNotify } from "src/utils/notify";
 
 export const useRequestStore = defineStore("request", {
   state: () => ({
     rows: ref([]),
     details: {},
-    tabs: [],
+    tabs: LocalStorage.getItem('tabs') || [],
     isShow: false,
   }),
-  getters: {},
+  getters: {
+
+  },
   actions: {
     async fetchData() {
       try {
@@ -93,5 +96,12 @@ export const useRequestStore = defineStore("request", {
     tabIsOpen(id) {
       return this.tabs.some((tab) => tab.id === id);
     },
+
+    getIdByNum(num) {
+      const tabs = LocalStorage.getItem("tabs") || [];
+      const res = tabs.find((item) => item.num == num) || null;
+      return res.id;
+    }
+
   },
 });

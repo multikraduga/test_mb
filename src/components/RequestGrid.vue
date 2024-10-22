@@ -15,7 +15,7 @@
           flat
           round
           icon="arrow_right"
-          @click="$emit('click-btn', props.row.id)"
+          @click="$emit('click-btn', props.row)"
         />
       </q-td>
     </template>

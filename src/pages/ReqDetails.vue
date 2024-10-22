@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-lg">
+  <div class="q-pa-lg" v-if="localForm">
     <div class="row items-center justify-start q-mb-md">
       <div class="text-h4">Детали</div>
     </div>
@@ -119,23 +119,41 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { watch, onMounted, ref } from "vue";
 import { useRequestStore } from "src/stores/requests";
 import { useRouter } from "vue-router";
 
 const props = defineProps({
-  id: String,
+  num: String,
 });
 
 const reqStore = useRequestStore();
 
-// Локальная копия данных при помощи reactive
-const localForm = reactive(reqStore.deepCopy(reqStore.details[props.id]));
+// достаем id по num из LocalStorage
+const id = reqStore.getIdByNum(props.num);
+const localForm = ref(null);
+
+onMounted(() => {
+  if (!reqStore.details[id]) {
+    reqStore.getDetails(id);
+  }
+});
+
+watch(
+  () => reqStore.details[id],
+  (newValue) => {
+    if (newValue) {
+      // Локальная копия данных
+      localForm.value = reqStore.deepCopy(newValue);
+    }
+  },
+  { immediate: true }
+);
 
 // Отменяем изменения
 const cancelEdit = () => {
-  Object.assign(localForm, reqStore.deepCopy(reqStore.details[props.id])); // Возвращаем начальные данные
-  reqStore.removeTab(props.id);
+  Object.assign(localForm, reqStore.deepCopy(reqStore.details[id])); // Возвращаем начальные данные
+  reqStore.removeTab(id);
   router.push(`/request`);
 };
 
@@ -144,7 +162,7 @@ const router = useRouter();
 // Сохраняем изменения
 const saveEdit = () => {
   reqStore.updateRequest(reqStore.deepCopy(localForm));
-  reqStore.removeTab(props.id);
+  reqStore.removeTab(id);
   router.push(`/request`);
 };
 </script>
