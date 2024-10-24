@@ -1,32 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecting...</title>
     <script>
-      // Получаем текущий путь
-      const path = window.location.pathname;
-
-      // Проверяем, начинается ли путь с /test_mb/request/
-      if (path.startsWith("/test_mb/request/")) {
-        // Извлекаем id из URL
-        const id = path.split("/")[3]; // id будет на позиции 3
-
-        // Проверяем, является ли id непустым и числом
-        if (id) {
-          // Перенаправляем на правильный маршрут
-          window.location.href = "/test_mb/request/" + id;
-        } else {
-          // Если id не валиден, перенаправляем на главную страницу
-          window.location.href = "/test_mb/";
-        }
-      } else {
-        // Перенаправляем на главную страницу для других маршрутов
-        window.location.href = "/test_mb/";
-      }
+      // Получаем текущий URL
+      const url = window.location.href;
+      // Перенаправляем на index.html, сохраняя путь
+      window.location.href =
+        "/test_mb/index.html" +
+        window.location.pathname +
+        window.location.search;
     </script>
   </head>
   <body>
-    <p>If you are not redirected, <a href="/">click here</a>.</p>
+    <p>
+      If you are not redirected, <a href="/test_mb/index.html">click here</a>.
+    </p>
   </body>
 </html>
