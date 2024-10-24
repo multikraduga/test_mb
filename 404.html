@@ -18,6 +18,7 @@
         // Перенаправляем на index.html с сохранением относительного пути для Vue Router
         const relativePath = path.slice(basePath.length);
         window.location.href = basePath + "/index.html" + relativePath;
+        console.log(window.location.href);
       } else {
         // Если путь уже содержит 'index.html' или это статический файл, ничего не делаем
         console.log("Перенаправление не требуется, или это статический файл.");
