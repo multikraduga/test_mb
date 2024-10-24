@@ -13,7 +13,7 @@
         const id = path.split("/")[3]; // id будет на позиции 3
 
         // Проверяем, является ли id непустым и числом
-        if (id && !isNaN(id)) {
+        if (id) {
           // Перенаправляем на правильный маршрут
           window.location.href = "/test_mb/request/" + id;
         } else {
