@@ -34,7 +34,6 @@ export const useRequestStore = defineStore("request", {
     },
 
     async getDetails(id) {
-      console.log("get det", id);
       try {
         Loading.show();
         const response = await fetch(
@@ -103,7 +102,6 @@ export const useRequestStore = defineStore("request", {
     },
 
     updateTab(id, updateData) {
-      console.log("updateTab", id, updateData);
       const tab = this.tabs.find((tab) => tab.id == id);
       if (tab) {
         Object.assign(tab, updateData);
