@@ -10,9 +10,17 @@
       // Проверяем, начинается ли путь с /request/
       if (path.startsWith("/request/")) {
         // Извлекаем id из URL
-        const id = path.split("/")[2];
-        // Перенаправляем на правильный маршрут
-        window.location.href = "/test_mb/request/" + id;
+        const parts = path.split("/");
+        const id = parts[2];
+
+        // Проверяем, является ли id числом
+        if (id && !isNaN(id)) {
+          // Перенаправляем на правильный маршрут
+          window.location.href = "/test_mb/request/" + id;
+        } else {
+          // Если id не валиден, перенаправляем на главную страницу
+          window.location.href = "/test_mb/";
+        }
       } else {
         // Перенаправляем на главную страницу
         window.location.href = "/test_mb/";
