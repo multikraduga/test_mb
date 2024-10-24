@@ -1,7 +1,7 @@
 const routes = [
   {
     path: "/",
-    redirect: '/request', // Redirect root to /request
+    redirect: "/request", // Redirect root to /request
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
@@ -10,7 +10,7 @@ const routes = [
         name: "Request",
       },
       {
-        path: "request/:num",
+        path: "request/:id",
         name: "ReqDetails",
         component: () => import("pages/ReqDetails.vue"),
         props: true,

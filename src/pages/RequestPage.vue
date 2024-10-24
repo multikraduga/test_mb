@@ -30,6 +30,7 @@ import { useRouter } from "vue-router";
 import { onMounted, computed } from "vue";
 import { useRequestStore } from "src/stores/requests";
 import RequestForm from "src/components/RequestForm.vue";
+import { LocalStorage } from "quasar";
 
 const reqStore = useRequestStore();
 
@@ -100,11 +101,11 @@ const closeForm = () => {
 
 const router = useRouter();
 
-async function getRequest(row) {
-  if (!reqStore.details[row.id]) {
-    await reqStore.getDetails(row.id);
+async function getRequest(id) {
+  if (!reqStore.details[id]) {
+    await reqStore.getDetails(id);
   }
-  router.push(`/request/${String(row.num)}`);
+  router.push(`/request/${id}`);
 }
 
 const deleteRequest = (id) => {
@@ -112,6 +113,7 @@ const deleteRequest = (id) => {
   if (reqStore.tabIsOpen(id)) {
     reqStore.removeTab(id);
   }
+  LocalStorage.setItem("tabs", reqStore.tabs);
 };
 
 onMounted(() => {

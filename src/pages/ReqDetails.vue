@@ -124,23 +124,34 @@ import { useRequestStore } from "src/stores/requests";
 import { useRouter } from "vue-router";
 
 const props = defineProps({
-  num: String,
+  id: String,
 });
 
 const reqStore = useRequestStore();
 
-// достаем id по num из LocalStorage
-const id = reqStore.getIdByNum(props.num);
 const localForm = ref(null);
 
 onMounted(() => {
-  if (!reqStore.details[id]) {
-    reqStore.getDetails(id);
+  if (!reqStore.details[props.id]) {
+    reqStore.getDetails(props.id).then(() => {
+      const updatedRow = reqStore.details[props.id];
+      if (updatedRow) {
+        // Обновите название вкладки
+        reqStore.updateTab(props.id, {
+          label: `Заявка №${updatedRow.num}`,
+        });
+      }
+    });
+  } else {
+    const num = reqStore.details[props.id].num;
+    reqStore.updateTab(props.id, {
+      label: `Заявка №${num}`,
+    });
   }
 });
 
 watch(
-  () => reqStore.details[id],
+  () => reqStore.details[props.id],
   (newValue) => {
     if (newValue) {
       // Локальная копия данных
@@ -152,8 +163,8 @@ watch(
 
 // Отменяем изменения
 const cancelEdit = () => {
-  Object.assign(localForm, reqStore.deepCopy(reqStore.details[id])); // Возвращаем начальные данные
-  reqStore.removeTab(id);
+  Object.assign(localForm, reqStore.deepCopy(reqStore.details[props.id])); // Возвращаем начальные данные
+  reqStore.removeTab(props.id);
   router.push(`/request`);
 };
 
@@ -162,7 +173,7 @@ const router = useRouter();
 // Сохраняем изменения
 const saveEdit = () => {
   reqStore.updateRequest(reqStore.deepCopy(localForm));
-  reqStore.removeTab(id);
+  reqStore.removeTab(props.id);
   router.push(`/request`);
 };
 </script>

@@ -8,12 +8,10 @@ export const useRequestStore = defineStore("request", {
   state: () => ({
     rows: ref([]),
     details: {},
-    tabs: LocalStorage.getItem('tabs') || [],
+    tabs: LocalStorage.getItem("tabs") || [],
     isShow: false,
   }),
-  getters: {
-
-  },
+  getters: {},
   actions: {
     async fetchData() {
       try {
@@ -36,6 +34,7 @@ export const useRequestStore = defineStore("request", {
     },
 
     async getDetails(id) {
+      console.log("get det", id);
       try {
         Loading.show();
         const response = await fetch(
@@ -97,11 +96,19 @@ export const useRequestStore = defineStore("request", {
       return this.tabs.some((tab) => tab.id === id);
     },
 
-    getIdByNum(num) {
+    getId(id) {
       const tabs = LocalStorage.getItem("tabs") || [];
-      const res = tabs.find((item) => item.num == num) || null;
-      return res.id;
-    }
+      const res = tabs.find((item) => item.id == id) || null;
+      return res;
+    },
 
+    updateTab(id, updateData) {
+      console.log("updateTab", id, updateData);
+      const tab = this.tabs.find((tab) => tab.id == id);
+      if (tab) {
+        Object.assign(tab, updateData);
+      }
+      LocalStorage.setItem("tabs", this.tabs);
+    },
   },
 });

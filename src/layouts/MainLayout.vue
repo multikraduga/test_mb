@@ -9,7 +9,7 @@
             v-for="tab in reqStore.tabs"
             :key="tab.id"
             :label="tab.label"
-            :to="`/request/${tab.num}`"
+            :to="`/request/${tab.id}`"
           >
             <q-btn
               flat
@@ -25,7 +25,7 @@
     </q-header>
 
     <q-page-container>
-      <router-view :key="route.params.num" />
+      <router-view :key="route.params.id" />
     </q-page-container>
   </q-layout>
 </template>
@@ -51,21 +51,19 @@ watch(
   () => route.name,
   (newName) => {
     if (newName === "ReqDetails") {
-      const num = route.params.num; // Получаем num
+      const idRouter = route.params.id;
 
-      let id =
-        reqStore.rows.find((row) => row.num == num)?.id ||
-        reqStore.getIdByNum(num);
+      let row =
+        reqStore.rows.find((row) => row.id == idRouter) ||
+        reqStore.getId(idRouter);
 
       // Проверяем, если вкладка уже существует, не добавляем её
-      if (!reqStore.tabIsOpen(id)) {
+      if (!row || !reqStore.tabIsOpen(row.id)) {
         reqStore.addTab({
-          id: id,
-          label: `Заявка №${num}`,
-          num: num,
+          id: idRouter,
+          label: `Заявка...`,
+          num: idRouter,
         });
-
-        LocalStorage.setItem("tabs", reqStore.tabs);
       }
     }
   },
