@@ -10,16 +10,17 @@
       // Указываем базовый путь
       const basePath = "/test_mb"; // ваш publicPath в vue.config.js
 
-      // Проверяем, если текущий путь не содержит 'index.html'
-      if (!path.includes("index.html")) {
-        // Извлекаем относительный путь после basePath
+      // Проверяем, если текущий путь не содержит 'index.html' и не является статическим файлом
+      if (
+        !path.includes("index.html") &&
+        !path.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico)$/)
+      ) {
+        // Перенаправляем на index.html с сохранением относительного пути для Vue Router
         const relativePath = path.slice(basePath.length);
-
-        // Перенаправляем на index.html, добавляя относительный путь
         window.location.href = basePath + "/index.html" + relativePath;
       } else {
-        // Если в пути уже есть 'index.html', ничего не делаем
-        console.log("Перенаправление не требуется, уже на index.html");
+        // Если путь уже содержит 'index.html' или это статический файл, ничего не делаем
+        console.log("Перенаправление не требуется, или это статический файл.");
       }
     </script>
   </head>
