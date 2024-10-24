@@ -5,15 +5,14 @@
     <title>Redirecting...</title>
     <script>
       // Получаем текущий путь
-      const path = window.location.pathname.replace("/test_mb", "");
+      const path = window.location.pathname;
 
-      // Проверяем, начинается ли путь с /request/
-      if (path.startsWith("/request/")) {
+      // Проверяем, начинается ли путь с /test_mb/request/
+      if (path.startsWith("/test_mb/request/")) {
         // Извлекаем id из URL
-        const parts = path.split("/");
-        const id = parts[2];
+        const id = path.split("/")[3]; // id будет на позиции 3
 
-        // Проверяем, является ли id числом
+        // Проверяем, является ли id непустым и числом
         if (id && !isNaN(id)) {
           // Перенаправляем на правильный маршрут
           window.location.href = "/test_mb/request/" + id;
@@ -22,7 +21,7 @@
           window.location.href = "/test_mb/";
         }
       } else {
-        // Перенаправляем на главную страницу
+        // Перенаправляем на главную страницу для других маршрутов
         window.location.href = "/test_mb/";
       }
     </script>
