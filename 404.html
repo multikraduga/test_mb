@@ -7,25 +7,26 @@
       // Получаем текущий путь
       const path = window.location.pathname;
 
-      // Указываем базовый путь
-      const basePath = "/test_mb"; // ваш publicPath в vue.config.js
+      // Проверяем, начинается ли путь с /test_mb/request/
+      if (path.startsWith("/test_mb/request/")) {
+        // Извлекаем id из URL
+        const id = path.split("/")[3]; // id будет на позиции 3
 
-      // Проверяем, если текущий путь не содержит 'index.html' и не является статическим файлом
-      if (
-        !path.includes("index.html") &&
-        !path.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico)$/)
-      ) {
-        // Перенаправляем на index.html с сохранением относительного пути для Vue Router
-        const relativePath = path.slice(basePath.length);
-        window.location.href = basePath + "/index.html" + relativePath;
-        console.log(window.location.href);
+        // Проверяем, является ли id непустым и числом
+        if (id) {
+          // Перенаправляем на правильный маршрут
+          window.location.href = "/test_mb/request/" + id;
+        } else {
+          // Если id не валиден, перенаправляем на главную страницу
+          window.location.href = "/test_mb/";
+        }
       } else {
-        // Если путь уже содержит 'index.html' или это статический файл, ничего не делаем
-        console.log("Перенаправление не требуется, или это статический файл.");
+        // Перенаправляем на главную страницу для других маршрутов
+        window.location.href = "/test_mb/";
       }
     </script>
   </head>
   <body>
-    <p>If you are not redirected, <a href="/test_mb/">click here</a>.</p>
+    <p>If you are not redirected, <a href="/">click here</a>.</p>
   </body>
 </html>
