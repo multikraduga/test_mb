@@ -4,18 +4,22 @@
     <meta charset="utf-8" />
     <title>Redirecting...</title>
     <script>
-      // Получаем текущий путь и базовый путь
+      // Получаем текущий путь
       const path = window.location.pathname;
+
+      // Указываем базовый путь
       const basePath = "/test_mb"; // ваш publicPath в vue.config.js
 
-      // Проверяем, начинается ли путь с базового пути
-      if (path.startsWith(basePath)) {
-        // Перенаправляем на index.html, сохраняя полный путь после basePath
+      // Проверяем, если текущий путь не содержит 'index.html'
+      if (!path.includes("index.html")) {
+        // Извлекаем относительный путь после basePath
         const relativePath = path.slice(basePath.length);
+
+        // Перенаправляем на index.html, добавляя относительный путь
         window.location.href = basePath + "/index.html" + relativePath;
       } else {
-        // Если путь не начинается с basePath, то перенаправляем на главную
-        window.location.href = basePath + "/index.html";
+        // Если в пути уже есть 'index.html', ничего не делаем
+        console.log("Перенаправление не требуется, уже на index.html");
       }
     </script>
   </head>
