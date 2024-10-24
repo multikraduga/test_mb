@@ -4,29 +4,22 @@
     <meta charset="utf-8" />
     <title>Redirecting...</title>
     <script>
-      // Получаем текущий путь
+      // Получаем текущий путь и базовый путь
       const path = window.location.pathname;
+      const basePath = "/test_mb"; // ваш publicPath в vue.config.js
 
-      // Проверяем, начинается ли путь с /test_mb/request/
-      if (path.startsWith("/test_mb/request/")) {
-        // Извлекаем id из URL
-        const id = path.split("/")[3]; // id будет на позиции 3
-
-        // Проверяем, является ли id непустым и числом
-        if (id) {
-          // Перенаправляем на правильный маршрут
-          window.location.href = "/test_mb/request/" + id;
-        } else {
-          // Если id не валиден, перенаправляем на главную страницу
-          window.location.href = "/test_mb/";
-        }
+      // Проверяем, начинается ли путь с базового пути
+      if (path.startsWith(basePath)) {
+        // Перенаправляем на index.html, сохраняя полный путь после basePath
+        const relativePath = path.slice(basePath.length);
+        window.location.href = basePath + "/index.html" + relativePath;
       } else {
-        // Перенаправляем на главную страницу для других маршрутов
-        window.location.href = "/test_mb/";
+        // Если путь не начинается с basePath, то перенаправляем на главную
+        window.location.href = basePath + "/index.html";
       }
     </script>
   </head>
   <body>
-    <p>If you are not redirected, <a href="/">click here</a>.</p>
+    <p>If you are not redirected, <a href="/test_mb/">click here</a>.</p>
   </body>
 </html>
