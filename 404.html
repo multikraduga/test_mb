@@ -2,12 +2,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Page Not Found</title>
+    <title>Redirecting...</title>
     <script>
+      // Получаем текущий путь
       const path = window.location.pathname.replace("/test_mb", "");
+
+      // Проверяем, начинается ли путь с /request/
       if (path.startsWith("/request/")) {
-        window.location.href = "/test_mb/";
+        // Извлекаем id из URL
+        const id = path.split("/")[2];
+        // Перенаправляем на правильный маршрут
+        window.location.href = "/test_mb/request/" + id;
       } else {
+        // Перенаправляем на главную страницу
         window.location.href = "/test_mb/";
       }
     </script>
